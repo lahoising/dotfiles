@@ -10,7 +10,7 @@
     pkgs.openssh
     pkgs.ripgrep
     pkgs.zig
-    pkgs.alsa-utils
+    pkgs.pavucontrol
     pkgs.brightnessctl
     pkgs.cargo
     pkgs.wget
