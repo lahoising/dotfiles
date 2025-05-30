@@ -44,6 +44,10 @@
     EDITOR = "vim";
   };
 
+  nixGL = {
+    packages = import <nixgl> { inherit pkgs; };
+  };
+
   programs.home-manager.enable = true;
 
   programs.wofi = {
@@ -74,5 +78,10 @@
         "git"
       ];
     };
+  };
+
+  programs.ghostty = {
+    enable = true;
+    package = config.lib.nixGL.wrap pkgs.ghostty;
   };
 }
