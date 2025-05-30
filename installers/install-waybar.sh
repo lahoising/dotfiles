@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 
-DST=~/.config/home-manager
-SRC=$(pwd)/home-manager
+SRC=$(pwd)/waybar
+DST=~/.config/waybar
 
 source $(pwd)/installers/install-dir.sh
 install $SRC $DST
