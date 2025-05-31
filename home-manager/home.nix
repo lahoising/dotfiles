@@ -56,6 +56,8 @@
 
   programs.tmux = {
     enable = true;
+    focusEvents = true;
+    keyMode = "vi";
   };
 
   programs.neovim = {
