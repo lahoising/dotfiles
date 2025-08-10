@@ -1,29 +1,41 @@
 { config, pkgs, ... }:
 
+let
+  isMacOs = pkgs.system == "aarch64-darwin";
+in
 {
   home.username = "lahoising";
-  home.homeDirectory = "/home/lahoising";
+  home.homeDirectory = (if isMacOs
+    then "/Users/"
+    else "/home/"
+  ) + "lahoising";
 
   home.stateVersion = "25.05";
 
   home.packages = [
-    pkgs.openssh
     pkgs.ripgrep
-    pkgs.zig
-    pkgs.pavucontrol
-    pkgs.brightnessctl
-    pkgs.cargo
-    pkgs.wget
-    pkgs.cmake
-    pkgs.gnat
     pkgs.jdk
-    pkgs.lua
     pkgs.luajitPackages.luarocks
     pkgs.readline
     pkgs.rustc
 
-    pkgs.oh-my-zsh
-  ];
+    # programming languages
+    pkgs.cargo # rust
+    pkgs.kotlin
+    pkgs.lua
+    pkgs.nodePackages.nodejs
+    pkgs.zig
+  ] ++ (if isMacOs
+  then []
+  else [
+    pkgs.openssh
+    pkgs.wget
+    pkgs.cmake
+    pkgs.gnat
+
+    pkgs.pavucontrol
+    pkgs.brightnessctl
+  ]);
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
   # plain files is through 'home.file'.
@@ -41,17 +53,19 @@
   };
 
   home.sessionVariables = {
-    EDITOR = "vim";
+    EDITOR = "nvim";
   };
 
-  nixGL = {
+  nixGL = if isMacOs 
+  then {}
+  else {
     packages = import <nixgl> { inherit pkgs; };
   };
 
   programs.home-manager.enable = true;
 
   programs.wofi = {
-    enable = true;
+    enable = !isMacOs;
   };
 
   programs.tmux = {
@@ -75,14 +89,16 @@
     defaultKeymap = "emacs";
     oh-my-zsh = {
       enable = true;
-      theme = "robbyrussell";
+      theme = "bira";
       plugins = [
         "git"
       ];
     };
   };
 
-  programs.ghostty = {
+  programs.ghostty = if isMacOs 
+  then {}
+  else {
     enable = true;
     package = config.lib.nixGL.wrap pkgs.ghostty;
   };
